@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 const NavigationStack = (): React.JSX.Element => {
   return (
     <Stack.Navigator
-      initialRouteName="OpeningScreen"
+      initialRouteName="ExploreScreen"
       screenOptions={{
         headerShown: false,
       }}>

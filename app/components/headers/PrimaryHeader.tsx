@@ -15,14 +15,18 @@ type SectionProps = PropsWithChildren<{
   style?: object;
   onPressBack?: any;
   title?: string;
+  type?: 'default' | 'searchbar';
+  backIconType?: 'left' | 'down';
 }>;
 
 const PrimaryHeader = ({
   style,
   onPressBack,
   title,
+  type = 'default',
+  backIconType = 'left',
 }: SectionProps): React.JSX.Element => {
-  const [text, setText] = useState<string>('skysports');
+  const [text, setText] = useState<string>('');
 
   useEffect(() => {
     const backAction = () => {
@@ -44,9 +48,11 @@ const PrimaryHeader = ({
 
   return (
     <View style={{...styles.parentView, ...style}}>
-      <TouchableOpacity style={styles.backButton} onPress={onPressBackArrow}>
+      <TouchableOpacity
+        style={backIconType === 'down' ? styles.downButton : styles.backButton}
+        onPress={onPressBackArrow}>
         <Image
-          style={styles.backArrow}
+          style={backIconType === 'down' ? styles.downArrow : styles.backArrow}
           resizeMode="contain"
           source={images.icons.back_icon}
         />
@@ -59,26 +65,20 @@ const PrimaryHeader = ({
         </View>
       )}
 
-      {false && (
+      {type === 'searchbar' && (
         <>
           <View style={styles.searchBar}>
             <TouchableOpacity>
               <Image
                 style={styles.searchIcon}
                 resizeMode="contain"
-                //source={require('../../../assets/images/search-icon/search-icon.png')}
+                source={images.icons.search_icon}
               />
             </TouchableOpacity>
-
-            <Image
-              style={styles.profileImage}
-              resizeMode="contain"
-              //source={require('../../../assets/dummyImages/skysoport-profile/skysport.png')}
-            />
             <TextInput
               //ref={}
-              placeholderTextColor={'#B3B3B3'}
-              placeholder="Search Libry"
+              placeholderTextColor={colors.TEXT_COLOR_ON_DARK_BACKGROUND}
+              placeholder="Find Service Centers"
               style={styles.textInput}
               onChangeText={(value: React.SetStateAction<string>) =>
                 setText(value)
@@ -113,9 +113,22 @@ const styles = StyleSheet.create({
     backgroundColor: colors.TRANSPARENT.PRIMARY_COLOR,
     borderRadius: 4,
   },
+  downButton: {
+    width: 32,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.TRANSPARENT.PRIMARY_COLOR,
+    borderRadius: 4,
+  },
   backArrow: {
     width: 8,
     height: 16,
+  },
+  downArrow: {
+    width: 8,
+    height: 16,
+    transform: [{rotate: '-90deg'}],
   },
   titleContainer: {
     flex: 1,
@@ -140,7 +153,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     paddingHorizontal: 10,
     borderRadius: 4,
-    backgroundColor: '#1D1D1D',
+    backgroundColor: colors.TRANSPARENT.PRIMARY_COLOR,
   },
   searchIcon: {
     width: 15,
@@ -160,6 +173,6 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     fontWeight: '400',
     paddingVertical: 0,
-    color: '#B3B3B3',
+    color: colors.TEXT_COLOR_ON_DARK_BACKGROUND,
   },
 });
