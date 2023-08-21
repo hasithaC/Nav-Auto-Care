@@ -1,15 +1,30 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import PrimaryContainer from '../../../components/containers/PrimaryContainer';
-import {TextInput} from 'react-native-gesture-handler';
 import PrimaryButton from '../../../components/buttons/PrimaryButton';
 import * as RootNavigation from '../../../navigation/RootNavigation';
 import PrimaryHeader from '../../../components/headers/PrimaryHeader';
+import firebaseAuthentication from '../../../config/authentication';
+import PhoneNumberInput from '../components/PhoneNumberInput';
+import {isValidPhoneNumber} from 'react-phone-number-input';
+import {colors} from '../../../theme';
 
 const EnterPhoneNumberScreen = () => {
-  const [number, onChangeNumber] = React.useState('');
-  const onPressPrimaryButton = () => {
-    RootNavigation.navigate('EnterOTPScreen');
+  const {auth} = firebaseAuthentication();
+  const [PhoneNumber, setPhoneNumber] = useState('');
+  const [validPhoneNumber, setValidPhoneNumber] = useState(true);
+
+  const onPressPrimaryButton = async () => {
+    const valid = isValidPhoneNumber(PhoneNumber);
+    setValidPhoneNumber(valid);
+    if (validPhoneNumber) {
+      const confirmation = await auth().signInWithPhoneNumber(PhoneNumber);
+      if (confirmation) {
+        RootNavigation.navigate('EnterOTPScreen', {
+          confirmation,
+        });
+      }
+    }
   };
 
   const onPressBack = () => {
@@ -18,21 +33,18 @@ const EnterPhoneNumberScreen = () => {
 
   return (
     <View style={styles.parentContainer}>
-       <PrimaryHeader onPressBack={onPressBack} />
+      <PrimaryHeader onPressBack={onPressBack} />
       <PrimaryContainer style={styles.primaryContainer}>
         <View style={styles.topContent}>
-          <Text>{'Verification'}</Text>
-          <Text>
+          <Text style={styles.title}>{'Verification'}</Text>
+
+          <PhoneNumberInput
+            onChangeMobileNum={setPhoneNumber}
+            error={!validPhoneNumber}
+          />
+          <Text style={styles.description}>
             {'We will send you One Time Password on your phone number'}
           </Text>
-
-          <TextInput
-            style={{height: 40, marginBottom: 100}}
-            onChangeText={onChangeNumber}
-            value={number}
-            placeholder="Enter phone number"
-            keyboardType="phone-pad"
-          />
         </View>
         <PrimaryButton
           color={'dark'}
@@ -57,7 +69,24 @@ const styles = StyleSheet.create({
   topContent: {
     flex: 1,
     width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: '20%',
+    paddingHorizontal: 24,
+  },
+  title: {
+    // fontFamily:'',
+    textAlign: 'left',
+    fontSize: 38,
+    lineHeight: 45,
+    fontWeight: '600',
+    color: colors.TEXT_COLOR_ON_DARK_BACKGROUND,
+    marginBottom: 10,
+  },
+  description: {
+    // fontFamily:'',
+    fontSize: 14,
+    lineHeight: 16,
+    fontWeight: '400',
+    color: colors.TEXT_COLOR_ON_LIGHT_BACKGROUND,
+    marginTop: 16,
   },
 });
