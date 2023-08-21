@@ -10,14 +10,14 @@ const Root = (): React.JSX.Element => {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
-      background: colors.BACKGROUND_COLOR,
+      background: colors.SECONDARY_COLOR,
     },
   };
   return (
     <>
       <StatusBar
         translucent={false}
-        backgroundColor={colors.BACKGROUND_COLOR}
+        backgroundColor={colors.SECONDARY_COLOR}
         barStyle={'default'}
       />
       <SafeAreaView style={styles.safeAreaView}>
@@ -34,6 +34,6 @@ export default Root;
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
-    backgroundColor: colors.BACKGROUND_COLOR,
+    backgroundColor: colors.SECONDARY_COLOR,
   },
 });

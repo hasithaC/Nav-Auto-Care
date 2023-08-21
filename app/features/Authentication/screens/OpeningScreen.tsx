@@ -1,12 +1,33 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PrimaryContainer from '../../../components/containers/PrimaryContainer';
 import PrimaryButton from '../../../components/buttons/PrimaryButton';
 import * as RootNavigation from '../../../navigation/RootNavigation';
+import firebaseAuthentication from '../../../config/authentication';
 
 const OpeningScreen = () => {
-  const onPressPrimaryButton = () => {
-    RootNavigation.navigate('EnterPhoneNumberScreen');
+  const userTypes = {
+    FRESH_USER: 'FRESH_USER',
+    EXISTING_USER: 'EXISTING_USER',
+  };
+  const [userType, setUserType] = useState(userTypes.FRESH_USER);
+  useEffect(() => {
+    firebaseAuthentication()
+      .auth()
+      .onAuthStateChanged(user => {
+        if (user !== null) {
+          setUserType(userTypes.EXISTING_USER);
+        } else {
+          setUserType(userTypes.FRESH_USER);
+        }
+      });
+  }, []);
+  const onPressPrimaryButton = async () => {
+    if (userType === userTypes.EXISTING_USER) {
+      RootNavigation.navigate('ExploreScreen');
+    } else {
+      RootNavigation.navigate('EnterPhoneNumberScreen');
+    }
   };
 
   return (
@@ -30,6 +51,24 @@ const OpeningScreen = () => {
           text={'GET START'}
           onPress={onPressPrimaryButton}
         />
+        {userType === userTypes.EXISTING_USER && (
+          <Text
+            onPress={() => {
+              firebaseAuthentication()
+                .auth()
+                .signOut()
+                .then(
+                  function () {
+                    console.log('Signed Out');
+                  },
+                  function (error) {
+                    console.error('Sign Out Error', error);
+                  },
+                );
+            }}>
+            Log Out
+          </Text>
+        )}
       </PrimaryContainer>
     </View>
   );
