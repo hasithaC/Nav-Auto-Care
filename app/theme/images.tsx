@@ -1,0 +1,7 @@
+const images = {
+  icons: {
+    back_icon: require('../assets/images/back-arrow/back-arrow.png'),
+    search_icon: require('../assets/images/search-icon/search-icon.png'),
+  },
+};
+export {images};
