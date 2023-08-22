@@ -7,6 +7,10 @@ import SpotDetailsCard from '../views/SpotDetailsCard';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {images} from '../../../theme/images';
 import Geolocation from 'react-native-geolocation-service';
+import {googleAPIKey} from '../../../constants/GoogleAPIKey';
+import {fetchSpotsNearBy} from '../../../services/Explore/Explore';
+import PrimaryButton from '../../../components/buttons/PrimaryButton';
+import MapViewDirections from 'react-native-maps-directions';
 
 const requestLocationPermission = async () => {
   try {
@@ -34,13 +38,44 @@ const requestLocationPermission = async () => {
 };
 
 const ExploreScreen = () => {
-  const [spotDetailsCollapsed, setSpotDetailsCollapsed] = useState(false);
+  const [spotsLocations, setSpotsLocations] = useState([]);
+  const [spot, setSpot] = useState({name: '', vicinity: ''});
   const [latitude, setLatitude] = useState(6.927079);
   const [longitude, setLongitude] = useState(79.861244);
+  const [primaryButtonVisibility, setPrimaryButtonVisibility] = useState(true);
+  const [distance, setDistance] = useState(0);
+  const [duration, setDuration] = useState(0);
+  let radius = 4 * 1000;
+  const placeType = 'car_wash';
+  const url =
+    'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' +
+    latitude +
+    ',' +
+    longitude +
+    '&radius=' +
+    radius +
+    '&type=' +
+    placeType +
+    '&key=' +
+    googleAPIKey;
 
   const onPressBack = () => {
     RootNavigation.replace('OpeningScreen');
   };
+  const fetchSpots = async () => {
+    try {
+      const response: {
+        html_attributions: [];
+        next_page_token: string;
+        results: [];
+      } = await fetchSpotsNearBy(url);
+      setSpotsLocations(response ? response.results : []);
+      setPrimaryButtonVisibility(false);
+    } catch (error) {
+      setPrimaryButtonVisibility(true);
+    }
+  };
+
   const onPressStart = () => {
     RootNavigation.navigate('RoutingScreen');
   };
@@ -84,14 +119,25 @@ const ExploreScreen = () => {
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}>
-        <Marker
-          coordinate={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-          }}
-          title="Auto Miraj">
-          <Image source={images.icons.spot_pin} style={styles.spotPinIcon} />
-        </Marker>
+        {spotsLocations.map((item, index) => {
+          return (
+            <Marker
+              key={index}
+              coordinate={{
+                latitude: item.geometry.location.lat,
+                longitude: item.geometry.location.lng,
+              }}
+              onPress={() => {
+                setSpot(item);
+              }}>
+              <Image
+                source={images.icons.spot_pin}
+                style={styles.spotPinIcon}
+              />
+            </Marker>
+          );
+        })}
+
         <Marker
           coordinate={{
             latitude: latitude,
@@ -103,17 +149,54 @@ const ExploreScreen = () => {
             style={styles.spotPinIcon}
           />
         </Marker>
+        {spot.geometry && !primaryButtonVisibility && (
+          <MapViewDirections
+            origin={{
+              latitude: latitude,
+              longitude: longitude,
+            }}
+            strokeWidth={3}
+            strokeColor="red"
+            destination={{
+              latitude: spot.geometry.location.lat,
+              longitude: spot.geometry.location.lng,
+            }}
+            apikey={googleAPIKey}
+            onReady={result => {
+              setDuration(result.duration);
+              setDistance(result.distance);
+            }}
+          />
+        )}
       </MapView>
       <PrimaryHeader
         onPressBack={onPressBack}
         type="searchbar"
         style={styles.header}
       />
-      <SpotDetailsCard
-        style={styles.detailsCard}
-        onPressStart={onPressStart}
-        collapsed={spotDetailsCollapsed}
-      />
+
+      {primaryButtonVisibility ? (
+        <PrimaryButton
+          text={'FIND SERVICE CENTERS NEAR YOU'}
+          onPress={() => {
+            fetchSpots();
+          }}
+          color="dark"
+          style={styles.detailsCard}
+        />
+      ) : (
+        <SpotDetailsCard
+          details={`${spot.name} | ${Math.round(distance * 10) / 10}km | ${
+            Math.round(duration * 100) / 100
+          }min`}
+          style={styles.detailsCard}
+          onPressStart={onPressStart}
+          onPressCancel={() => {
+            setPrimaryButtonVisibility(true);
+          }}
+          collapsed={false}
+        />
+      )}
     </View>
   );
 };
@@ -161,5 +244,6 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     resizeMode: 'contain',
+    tintColor: colors.ACCENT_COLOR,
   },
 });
