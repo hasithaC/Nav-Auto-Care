@@ -7,13 +7,15 @@ import Collapsible from 'react-native-collapsible';
 type SectionProps = PropsWithChildren<{
   onPressStart?: Function;
   collapsed?: boolean;
+  style?: object;
 }>;
 const SpotDetailsCard = ({
   onPressStart,
   collapsed = false,
+  style,
 }: SectionProps): React.JSX.Element => {
   return (
-    <Collapsible style={styles.container} collapsed={collapsed}>
+    <Collapsible style={{...styles.container, ...style}} collapsed={collapsed}>
       <Image style={styles.image} resizeMode="contain" />
       <View style={styles.textContainer}>
         <Text>Auto Miraj</Text>
