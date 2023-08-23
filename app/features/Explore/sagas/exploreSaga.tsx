@@ -1,17 +1,34 @@
 import {call, put, select} from 'redux-saga/effects';
-import { setSpinnerVisible } from '../../../redux/action/action';
+import {
+  setNearSpots,
+  setSelectedSpot,
+  setSpinnerVisible,
+  setSpotsAvalability,
+} from '../../../redux/action/action';
+import {fetchSpotsNearBy} from '../../../services/Explore/Explore';
 
-export function* callSpotFetchAPI() {
-  //const triggeredScreen = action.payload;
+export function* callSpotFetchAPI(action: any) {
+  const url = action.payload;
+  yield put(setSpinnerVisible(true));
+  yield put(setSpotsAvalability(false));
 
   try {
-     //yield put(setSpinnerVisible(true));
-    //yield put(setSpinnerVisible(false));
-    console.log('FROM SAGA')
-  } catch (error) {
-    // yield put(setSpinnerVisible(false));
-    // yield put(setEndPointErrorVisible(true));
+    const response: {
+      html_attributions: [];
+      next_page_token: string;
+      results: [];
+    } = yield call(fetchSpotsNearBy, url);
 
-    console.log('EXPLORE_ERROR =>', error);
+    yield put(setNearSpots(response.results));
+    yield put(
+      setSelectedSpot(
+        response.results[0] ? response.results[0] : {name: '', vicinity: ''},
+      ),
+    );
+    yield put(setSpotsAvalability(true));
+  } catch (error) {
+    yield put(setSpotsAvalability(false));
+    console.log('Spots Fetching ->', error);
   }
+  yield put(setSpinnerVisible(false));
 }

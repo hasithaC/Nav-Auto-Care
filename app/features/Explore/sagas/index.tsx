@@ -3,5 +3,5 @@ import * as type from '../../../redux/action/type';
 import {callSpotFetchAPI} from './exploreSaga';
 
 export const exploreSaga = [
-  takeLatest(type.SET_SPINNER_VISIBLE, callSpotFetchAPI),
+  takeLatest(type.GET_SPOTS_NEAR_USER, callSpotFetchAPI),
 ];
