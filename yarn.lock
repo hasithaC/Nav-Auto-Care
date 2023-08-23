@@ -2639,6 +2639,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/geojson@npm:^7946.0.10":
+  version: 7946.0.10
+  resolution: "@types/geojson@npm:7946.0.10"
+  checksum: 12c407c2dc93ecb26c08af533ee732f1506a9b29456616ba7ba1d525df96206c28ddf44a528f6a5415d7d22893e9d967420940a9c095ee5e539c1eba5fefc1f4
+  languageName: node
+  linkType: hard
+
 "@types/graceful-fs@npm:^4.1.3":
   version: 4.1.6
   resolution: "@types/graceful-fs@npm:4.1.6"
@@ -2922,15 +2929,21 @@ __metadata:
     "@tsconfig/react-native": ^3.0.0
     "@types/react": ^18.0.24
     "@types/react-test-renderer": ^18.0.0
+    axios: 0.18.0
     babel-jest: ^29.2.1
     eslint: ^8.19.0
+    geolib: ^3.3.4
     jest: ^29.2.1
     metro-react-native-babel-preset: 0.76.8
     prettier: ^2.4.1
     react: 18.2.0
     react-native: 0.72.4
     react-native-collapsible: ^1.6.1
+    react-native-geolocation-service: ^5.3.1
     react-native-gesture-handler: ^2.12.1
+    react-native-maps: ^1.7.1
+    react-native-maps-directions: ^1.9.0
+    react-native-maps-navigation: ^0.0.14
     react-native-otp-inputs: ^7.4.0
     react-native-raw-bottom-sheet: ^2.2.0
     react-native-safe-area-context: ^4.7.1
@@ -3286,6 +3299,16 @@ __metadata:
   version: 1.0.5
   resolution: "available-typed-arrays@npm:1.0.5"
   checksum: 20eb47b3cefd7db027b9bbb993c658abd36d4edd3fe1060e83699a03ee275b0c9b216cc076ff3f2db29073225fb70e7613987af14269ac1fe2a19803ccc97f1a
+  languageName: node
+  linkType: hard
+
+"axios@npm:0.18.0":
+  version: 0.18.0
+  resolution: "axios@npm:0.18.0"
+  dependencies:
+    follow-redirects: ^1.3.0
+    is-buffer: ^1.1.5
+  checksum: 94f0ab0f6f554f85611f3bf4f4293eb5fbb7992ed5df19790b8493240a8830be38c67b55932a073e9daad2ee1bc7649b8db307894783f4d380a03ec95dcc5800
   languageName: node
   linkType: hard
 
@@ -4939,6 +4962,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"follow-redirects@npm:^1.3.0":
+  version: 1.15.2
+  resolution: "follow-redirects@npm:1.15.2"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: faa66059b66358ba65c234c2f2a37fcec029dc22775f35d9ad6abac56003268baf41e55f9ee645957b32c7d9f62baf1f0b906e68267276f54ec4b4c597c2b190
+  languageName: node
+  linkType: hard
+
 "for-each@npm:^0.3.3":
   version: 0.3.3
   resolution: "for-each@npm:0.3.3"
@@ -5089,6 +5122,20 @@ __metadata:
   version: 1.0.0-beta.2
   resolution: "gensync@npm:1.0.0-beta.2"
   checksum: a7437e58c6be12aa6c90f7730eac7fa9833dc78872b4ad2963d2031b00a3367a93f98aec75f9aaac7220848e4026d67a8655e870b24f20a543d103c0d65952ec
+  languageName: node
+  linkType: hard
+
+"geolib@npm:^2.0.24":
+  version: 2.0.24
+  resolution: "geolib@npm:2.0.24"
+  checksum: c662d313d3797d92ac1b9573e3787f57122b0b3ae4226840dc2b55fd9eea7817d631ce62b0dc551b6aacfbbad290fec9be36cdaf107e95481e91bcdd6dcaad46
+  languageName: node
+  linkType: hard
+
+"geolib@npm:^3.3.4":
+  version: 3.3.4
+  resolution: "geolib@npm:3.3.4"
+  checksum: b5ca8090effd384fec168a957d89416577a92dcb63aedf361a60794e07051e6f2a98a3c2db64de2dd9114ac22c63fbf9ec67b2f61dbc300292040cbd4387942b
   languageName: node
   linkType: hard
 
@@ -5601,6 +5648,13 @@ __metadata:
     call-bind: ^1.0.2
     has-tostringtag: ^1.0.0
   checksum: c03b23dbaacadc18940defb12c1c0e3aaece7553ef58b162a0f6bba0c2a7e1551b59f365b91e00d2dbac0522392d576ef322628cb1d036a0fe51eb466db67222
+  languageName: node
+  linkType: hard
+
+"is-buffer@npm:^1.1.5":
+  version: 1.1.6
+  resolution: "is-buffer@npm:1.1.6"
+  checksum: 4a186d995d8bbf9153b4bd9ff9fd04ae75068fe695d29025d25e592d9488911eeece84eefbd8fa41b8ddcc0711058a71d4c466dcf6f1f6e1d83830052d8ca707
   languageName: node
   linkType: hard
 
@@ -6689,6 +6743,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.isequal@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "lodash.isequal@npm:4.5.0"
+  checksum: da27515dc5230eb1140ba65ff8de3613649620e8656b19a6270afe4866b7bd461d9ba2ac8a48dcc57f7adac4ee80e1de9f965d89d4d81a0ad52bb3eec2609644
+  languageName: node
+  linkType: hard
+
 "lodash.merge@npm:^4.6.2":
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
@@ -6703,7 +6764,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.21":
+"lodash@npm:^4.17.21, lodash@npm:^4.17.4":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -8323,7 +8384,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:*, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:*, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -8433,6 +8494,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-geolocation-service@npm:^5.3.1":
+  version: 5.3.1
+  resolution: "react-native-geolocation-service@npm:5.3.1"
+  checksum: 9a625c9f87811933491055fd8cbd1ef46f97fbbe0262714ad1d9aa969a8900dcb4abc47e58fe162400a81bcdee79324dfcc8e631862df9a22d59ac84af9acfde
+  languageName: node
+  linkType: hard
+
 "react-native-gesture-handler@npm:^2.12.1":
   version: 2.12.1
   resolution: "react-native-gesture-handler@npm:2.12.1"
@@ -8446,6 +8514,61 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 1aec3d71c5fd3b8087e613708ee77a0ce7a1ac2bc87f5a6a22529300795b48aaa2359bcba7309f2c14f9de1ca1ffa4904d06b3cb7263820f657a4469976aecb3
+  languageName: node
+  linkType: hard
+
+"react-native-maps-directions@npm:^1.9.0":
+  version: 1.9.0
+  resolution: "react-native-maps-directions@npm:1.9.0"
+  dependencies:
+    lodash.isequal: ^4.5.0
+    prop-types: ^15.6.0
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-maps: ">=1.0.0"
+  checksum: 2d7e4a88374b60f255b054766feb8cb86bb431e3737fc62908417c8232900da50618fd1a5a37dd42641f8bd8c737643da26496113a4c89727f26cdf1106aedf0
+  languageName: node
+  linkType: hard
+
+"react-native-maps-navigation@npm:^0.0.14":
+  version: 0.0.14
+  resolution: "react-native-maps-navigation@npm:0.0.14"
+  dependencies:
+    geolib: ^2.0.24
+    prop-types: ^15.6.2
+    react-native-optiongroup: ^0.0.7
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-maps: ">=0.21.0"
+  checksum: 102379d9d430c61e119baeeab2ffa6afb043e0bfab8492349f28ce06638efff0de281f28f03882a8c3529b29d503d317efd052dee5f44d0292239bf710a574da
+  languageName: node
+  linkType: hard
+
+"react-native-maps@npm:^1.7.1":
+  version: 1.7.1
+  resolution: "react-native-maps@npm:1.7.1"
+  dependencies:
+    "@types/geojson": ^7946.0.10
+  peerDependencies:
+    react: ">= 17.0.1"
+    react-native: ">= 0.64.3"
+    react-native-web: ">= 0.11"
+  peerDependenciesMeta:
+    react-native-web:
+      optional: true
+  checksum: 01f0dbba4c09fc21577ceef364a8121467d0b046df202bc22a8d1151af6ac8d4011e3bc7af18901a3266e506748572bf9ccdc2ac4c7f30bb66bf0f341251c529
+  languageName: node
+  linkType: hard
+
+"react-native-optiongroup@npm:^0.0.7":
+  version: 0.0.7
+  resolution: "react-native-optiongroup@npm:0.0.7"
+  dependencies:
+    lodash: ^4.17.4
+    prop-types: ^15.6.0
+  checksum: a2962c3271080cf27d20c0c7c766c404b9b3f4e3454df5217f9b44a58c12cac468a8a7d0175de055e94a1a3a90d18dbc845cf8883097ddffd3b59c2c6fd82b90
   languageName: node
   linkType: hard
 
