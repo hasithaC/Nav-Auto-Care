@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import PrimaryContainer from '../../../components/containers/PrimaryContainer';
 import PrimaryButton from '../../../components/buttons/PrimaryButton';
@@ -6,6 +6,8 @@ import * as RootNavigation from '../../../navigation/RootNavigation';
 import firebaseAuthentication from '../../../config/authentication';
 import {useDispatch} from 'react-redux';
 import {setSpinnerVisible} from '../../../redux/action/action';
+import {colors} from '../../../theme';
+import {images} from '../../../theme/images';
 
 const OpeningScreen = () => {
   const userTypes = {
@@ -43,14 +45,20 @@ const OpeningScreen = () => {
     <View style={styles.parentContainer}>
       <PrimaryContainer style={styles.primaryContainer}>
         <View style={styles.topContent}>
-          <Text>{'Nav Auto Care'}</Text>
-          <Text>
+          <Text style={styles.title}>{'Nav Auto Care'}</Text>
+          <Text style={styles.description}>
             {
-              'Welcome to Nav Auto Care \n your all-in-one car service navigator. Find nearby service centers, navigate with live tracking, and get there faster. Enjoy a seamless experience designed to keep your vehicle running smoothly.'
+              'Welcome to Nav Auto Care \nyour all-in-one car service navigator. Find nearby service centers, navigate with live tracking, and get there faster. Enjoy a seamless experience designed to keep your vehicle running smoothly.'
             }
           </Text>
+
+          <Image
+            source={images.gif.opening_gif}
+            resizeMode="contain"
+            style={styles.image}
+          />
         </View>
-        <Text>
+        <Text style={styles.bottomDescription}>
           {
             'Your personalized car service center navigator, \n Powered by React Native and Firebase.'
           }
@@ -62,6 +70,7 @@ const OpeningScreen = () => {
         />
         {userType === userTypes.EXISTING_USER && (
           <Text
+            style={styles.logout}
             onPress={() => {
               dispatch(setSpinnerVisible(true));
               firebaseAuthentication()
@@ -98,7 +107,50 @@ const styles = StyleSheet.create({
   topContent: {
     flex: 1,
     width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: '20%',
+    paddingHorizontal: 24,
+  },
+  title: {
+    // fontFamily:'',
+    textAlign: 'left',
+    fontSize: 38,
+    lineHeight: 45,
+    fontWeight: '600',
+    color: colors.TEXT_COLOR_ON_DARK_BACKGROUND,
+    marginBottom: 10,
+  },
+  description: {
+    // fontFamily:'',
+    fontSize: 14,
+    lineHeight: 16,
+    fontWeight: '400',
+    color: colors.TEXT_COLOR_ON_DARK_BACKGROUND,
+    marginTop: 16,
+  },
+  bottomDescription: {
+    // fontFamily:'',
+    fontSize: 14,
+    lineHeight: 16,
+    fontWeight: '400',
+    textAlign: 'center',
+    color: colors.TEXT_COLOR_ON_DARK_BACKGROUND,
+    marginBottom: 4,
+  },
+  logout: {
+    // fontFamily:'',
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '400',
+    textAlign: 'center',
+    color: colors.TEXT_COLOR_ON_LIGHT_BACKGROUND,
+    marginVertical: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 8,
+  },
+  image: {
+    width: '100%',
+    height: 300,
+    marginVertical: 32,
   },
 });
