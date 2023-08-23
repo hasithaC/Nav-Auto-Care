@@ -1,4 +1,4 @@
-import {Image, StyleSheet, View, PermissionsAndroid} from 'react-native';
+import {Image, StyleSheet, View, PermissionsAndroid, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import PrimaryHeader from '../../../components/headers/PrimaryHeader';
 import * as RootNavigation from '../../../navigation/RootNavigation';
@@ -11,8 +11,14 @@ import {googleAPIKey} from '../../../constants/GoogleAPIKey';
 import {fetchSpotsNearBy} from '../../../services/Explore/Explore';
 import PrimaryButton from '../../../components/buttons/PrimaryButton';
 import MapViewDirections from 'react-native-maps-directions';
-import {useDispatch} from 'react-redux';
-import {setSpinnerVisible} from '../../../redux/action/action';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getNearSpots,
+  setNearSpots,
+  setSelectedSpot,
+  setSpinnerVisible,
+  setSpotsAvalability,
+} from '../../../redux/action/action';
 
 const requestLocationPermission = async () => {
   try {
@@ -40,16 +46,20 @@ const requestLocationPermission = async () => {
 };
 
 const ExploreScreen = () => {
-  const [spotsLocations, setSpotsLocations] = useState([]);
-  const [spot, setSpot] = useState({name: '', vicinity: ''});
   const [latitude, setLatitude] = useState(6.927079);
   const [longitude, setLongitude] = useState(79.861244);
-  const [primaryButtonVisibility, setPrimaryButtonVisibility] = useState(true);
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
   const dispatch = useDispatch();
   let radius = 4 * 1000;
   const placeType = 'car_wash';
+
+  const SpotsAvalability = useSelector(
+    (state: any) => state.commonReducer.spotsAvalability,
+  );
+  const SPOTS = useSelector((state: any) => state.commonReducer.nearSpots);
+  const SPOT = useSelector((state: any) => state.commonReducer.selectedSpot);
+
   const url =
     'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' +
     latitude +
@@ -64,19 +74,6 @@ const ExploreScreen = () => {
 
   const onPressBack = () => {
     RootNavigation.replace('OpeningScreen');
-  };
-  const fetchSpots = async () => {
-    try {
-      const response: {
-        html_attributions: [];
-        next_page_token: string;
-        results: [];
-      } = await fetchSpotsNearBy(url);
-      setSpotsLocations(response ? response.results : []);
-      setPrimaryButtonVisibility(false);
-    } catch (error) {
-      setPrimaryButtonVisibility(true);
-    }
   };
 
   const onPressStart = () => {
@@ -111,10 +108,13 @@ const ExploreScreen = () => {
 
   useEffect(() => {
     getLocation();
+    dispatch(setNearSpots([]));
+    dispatch(setSpotsAvalability(false));
   }, []);
 
   return (
     <View style={styles.parentContainer}>
+      <Text>{SpotsAvalability.toString()}</Text>
       <MapView
         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
         style={styles.map}
@@ -124,24 +124,28 @@ const ExploreScreen = () => {
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}>
-        {spotsLocations.map((item, index) => {
-          return (
-            <Marker
-              key={index}
-              coordinate={{
-                latitude: item.geometry.location.lat,
-                longitude: item.geometry.location.lng,
-              }}
-              onPress={() => {
-                setSpot(item);
-              }}>
-              <Image
-                source={images.icons.spot_pin}
-                style={styles.spotPinIcon}
-              />
-            </Marker>
-          );
-        })}
+        {SpotsAvalability && (
+          <>
+            {SPOTS.map((item, index) => {
+              return (
+                <Marker
+                  key={index}
+                  coordinate={{
+                    latitude: item.geometry.location.lat,
+                    longitude: item.geometry.location.lng,
+                  }}
+                  onPress={() => {
+                    dispatch(setSelectedSpot(item));
+                  }}>
+                  <Image
+                    source={images.icons.spot_pin}
+                    style={styles.spotPinIcon}
+                  />
+                </Marker>
+              );
+            })}
+          </>
+        )}
 
         <Marker
           coordinate={{
@@ -154,7 +158,7 @@ const ExploreScreen = () => {
             style={styles.spotPinIcon}
           />
         </Marker>
-        {spot.geometry && !primaryButtonVisibility && (
+        {SPOT.geometry && SpotsAvalability && (
           <MapViewDirections
             origin={{
               latitude: latitude,
@@ -163,8 +167,8 @@ const ExploreScreen = () => {
             strokeWidth={3}
             strokeColor="red"
             destination={{
-              latitude: spot.geometry.location.lat,
-              longitude: spot.geometry.location.lng,
+              latitude: SPOT.geometry.location.lat,
+              longitude: SPOT.geometry.location.lng,
             }}
             apikey={googleAPIKey}
             onReady={result => {
@@ -180,24 +184,26 @@ const ExploreScreen = () => {
         style={styles.header}
       />
 
-      {primaryButtonVisibility ? (
+      {!SpotsAvalability && (
         <PrimaryButton
           text={'FIND SERVICE CENTERS NEAR YOU'}
           onPress={() => {
-            fetchSpots();
+            dispatch(getNearSpots(url));
           }}
           color="dark"
           style={styles.detailsCard}
         />
-      ) : (
+      )}
+      {SpotsAvalability && (
         <SpotDetailsCard
-          details={`${spot.name} | ${Math.round(distance * 10) / 10}km | ${
+          details={`${SPOT.name} | ${Math.round(distance * 10) / 10}km | ${
             Math.round(duration * 100) / 100
           }min`}
           style={styles.detailsCard}
           onPressStart={onPressStart}
           onPressCancel={() => {
-            setPrimaryButtonVisibility(true);
+            dispatch(setNearSpots([]));
+            dispatch(setSpotsAvalability(false));
           }}
           collapsed={false}
         />
