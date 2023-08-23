@@ -6,12 +6,16 @@ import * as RootNavigation from '../../../navigation/RootNavigation';
 import PrimaryHeader from '../../../components/headers/PrimaryHeader';
 import {colors} from '../../../theme';
 import OtpInputs from 'react-native-otp-inputs';
+import {useDispatch} from 'react-redux';
+import {setSpinnerVisible} from '../../../redux/action/action';
 
 const EnterOTPScreen = (props: {route: {params: {confirmation: any}}}) => {
   const [OTP, onChangeOTP] = useState('');
   const [validOTP, setValidOTP] = useState(true);
+  const dispatch = useDispatch();
 
   const onPressPrimaryButton = async () => {
+    dispatch(setSpinnerVisible(true));
     const authConfirmation = props.route.params.confirmation;
     try {
       await authConfirmation.confirm(OTP);
@@ -20,6 +24,7 @@ const EnterOTPScreen = (props: {route: {params: {confirmation: any}}}) => {
     } catch (error) {
       setValidOTP(false);
     }
+    dispatch(setSpinnerVisible(false));
   };
 
   const onPressBack = () => {
