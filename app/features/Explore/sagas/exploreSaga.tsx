@@ -1,5 +1,6 @@
 import {call, put, select} from 'redux-saga/effects';
 import {
+  setAlertBoxVisibility,
   setNearSpots,
   setSelectedSpot,
   setSpinnerVisible,
@@ -11,6 +12,15 @@ export function* callSpotFetchAPI(action: any) {
   const url = action.payload;
   yield put(setSpinnerVisible(true));
   yield put(setSpotsAvalability(false));
+
+  const aboutDefaultSelectedSpot = {
+    visible: true,
+    title: 'Service Station Near You',
+    description:
+      'The station selected is the closest to your location. Would you like to choose another? Tap any station pin icon.',
+    button: 'OK',
+    onPress: () => {},
+  };
 
   try {
     const response: {
@@ -26,6 +36,7 @@ export function* callSpotFetchAPI(action: any) {
       ),
     );
     yield put(setSpotsAvalability(true));
+    yield put(setAlertBoxVisibility(aboutDefaultSelectedSpot));
   } catch (error) {
     yield put(setSpotsAvalability(false));
     console.log('Spots Fetching ->', error);
