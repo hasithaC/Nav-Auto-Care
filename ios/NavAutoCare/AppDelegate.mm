@@ -1,15 +1,20 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
+#import <Firebase.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSServices provideAPIKey:@"AIzaSyAZQHE5pxBPMMOymrNF7PoKQvoaWoR_048"]; // add this line using the api key obtained from Google Console
+  [FIRApp configure];
   self.moduleName = @"NavAutoCare";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
+  
 
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
