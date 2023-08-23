@@ -11,6 +11,8 @@ import {googleAPIKey} from '../../../constants/GoogleAPIKey';
 import {fetchSpotsNearBy} from '../../../services/Explore/Explore';
 import PrimaryButton from '../../../components/buttons/PrimaryButton';
 import MapViewDirections from 'react-native-maps-directions';
+import {useDispatch} from 'react-redux';
+import {setSpinnerVisible} from '../../../redux/action/action';
 
 const requestLocationPermission = async () => {
   try {
@@ -45,6 +47,7 @@ const ExploreScreen = () => {
   const [primaryButtonVisibility, setPrimaryButtonVisibility] = useState(true);
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
+  const dispatch = useDispatch();
   let radius = 4 * 1000;
   const placeType = 'car_wash';
   const url =
@@ -81,6 +84,7 @@ const ExploreScreen = () => {
   };
 
   const getLocation = () => {
+    dispatch(setSpinnerVisible(true));
     const result = requestLocationPermission();
     result.then(res => {
       console.log('res is:', res);
@@ -102,6 +106,7 @@ const ExploreScreen = () => {
       }
     });
     console.log(latitude, longitude);
+    dispatch(setSpinnerVisible(false));
   };
 
   useEffect(() => {
