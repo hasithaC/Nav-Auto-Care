@@ -4,23 +4,32 @@ import PrimaryContainer from '../../../components/containers/PrimaryContainer';
 import PrimaryButton from '../../../components/buttons/PrimaryButton';
 import * as RootNavigation from '../../../navigation/RootNavigation';
 import firebaseAuthentication from '../../../config/authentication';
+import {useDispatch} from 'react-redux';
+import {setSpinnerVisible} from '../../../redux/action/action';
 
 const OpeningScreen = () => {
   const userTypes = {
     FRESH_USER: 'FRESH_USER',
     EXISTING_USER: 'EXISTING_USER',
   };
+  const dispatch = useDispatch();
   const [userType, setUserType] = useState(userTypes.FRESH_USER);
   useEffect(() => {
-    firebaseAuthentication()
-      .auth()
-      .onAuthStateChanged(user => {
-        if (user !== null) {
-          setUserType(userTypes.EXISTING_USER);
-        } else {
-          setUserType(userTypes.FRESH_USER);
-        }
-      });
+    dispatch(setSpinnerVisible(true));
+    try {
+      firebaseAuthentication()
+        .auth()
+        .onAuthStateChanged(user => {
+          if (user !== null) {
+            setUserType(userTypes.EXISTING_USER);
+          } else {
+            setUserType(userTypes.FRESH_USER);
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+    dispatch(setSpinnerVisible(false));
   }, []);
   const onPressPrimaryButton = async () => {
     if (userType === userTypes.EXISTING_USER) {
@@ -54,6 +63,7 @@ const OpeningScreen = () => {
         {userType === userTypes.EXISTING_USER && (
           <Text
             onPress={() => {
+              dispatch(setSpinnerVisible(true));
               firebaseAuthentication()
                 .auth()
                 .signOut()
@@ -65,6 +75,7 @@ const OpeningScreen = () => {
                     console.error('Sign Out Error', error);
                   },
                 );
+              dispatch(setSpinnerVisible(false));
             }}>
             Log Out
           </Text>
