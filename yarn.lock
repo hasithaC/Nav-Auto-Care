@@ -3024,6 +3024,7 @@ __metadata:
     react-native-collapsible: ^1.6.1
     react-native-geolocation-service: ^5.3.1
     react-native-gesture-handler: ^2.12.1
+    react-native-loading-spinner-overlay: ^3.0.1
     react-native-maps: ^1.7.1
     react-native-maps-directions: ^1.9.0
     react-native-maps-navigation: ^0.0.14
@@ -8608,6 +8609,16 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 1aec3d71c5fd3b8087e613708ee77a0ce7a1ac2bc87f5a6a22529300795b48aaa2359bcba7309f2c14f9de1ca1ffa4904d06b3cb7263820f657a4469976aecb3
+  languageName: node
+  linkType: hard
+
+"react-native-loading-spinner-overlay@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "react-native-loading-spinner-overlay@npm:3.0.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: d9e5e10bc6170084c162e717a94db7bd60a35eb8110614529caa501790ab9ddfb551239d2e9120aaa15048bfd0af03da8bed0d1ea09e7ebb88a4b39d88ed6878
   languageName: node
   linkType: hard
 

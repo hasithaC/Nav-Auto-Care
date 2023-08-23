@@ -8,21 +8,28 @@ import firebaseAuthentication from '../../../config/authentication';
 import PhoneNumberInput from '../components/PhoneNumberInput';
 import {isValidPhoneNumber} from 'react-phone-number-input';
 import {colors} from '../../../theme';
+import {useDispatch} from 'react-redux';
+import {setSpinnerVisible} from '../../../redux/action/action';
 
 const EnterPhoneNumberScreen = () => {
   const {auth} = firebaseAuthentication();
   const [PhoneNumber, setPhoneNumber] = useState('');
   const [validPhoneNumber, setValidPhoneNumber] = useState(true);
+  const dispatch = useDispatch();
 
   const onPressPrimaryButton = async () => {
+    dispatch(setSpinnerVisible(true));
     const valid = isValidPhoneNumber(PhoneNumber);
     setValidPhoneNumber(valid);
     if (validPhoneNumber) {
       const confirmation = await auth().signInWithPhoneNumber(PhoneNumber);
       if (confirmation) {
+        dispatch(setSpinnerVisible(false));
         RootNavigation.navigate('EnterOTPScreen', {
           confirmation,
         });
+      } else {
+        dispatch(setSpinnerVisible(false));
       }
     }
   };
