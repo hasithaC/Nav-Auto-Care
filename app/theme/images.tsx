@@ -3,7 +3,10 @@ const images = {
     back_icon: require('../assets/images/back-arrow/back-arrow.png'),
     search_icon: require('../assets/images/search-icon/search-icon.png'),
     spot_pin: require('../assets/images/spot-pin/spot-pin.png'),
-    current_location_pin: require('../assets/images/current-location-pin/current-location-pin.png')
+    current_location_pin: require('../assets/images/current-location-pin/current-location-pin.png'),
   },
+  gif: {
+    opening_gif: require('../assets/images/opening-image/opening-image.gif'),
+  }
 };
 export {images};

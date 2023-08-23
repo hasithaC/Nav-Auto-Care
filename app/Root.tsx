@@ -6,10 +6,14 @@ import React from 'react';
 import {colors} from './theme';
 import {useSelector} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import AlertBox from './components/alert/AlertBox';
 
 const Root = (): React.JSX.Element => {
   const SpinnerVisibility = useSelector(
     (state: any) => state.commonReducer.spinnerVisibility,
+  );
+  const AlertBoxVisibility = useSelector(
+    (state: any) => state.commonReducer.alertBoxVisibility,
   );
   const navContainerTheme = {
     ...DefaultTheme,
@@ -34,6 +38,13 @@ const Root = (): React.JSX.Element => {
           <NavigationStack />
         </NavigationContainer>
       </SafeAreaView>
+      <AlertBox
+        visible={AlertBoxVisibility.visible}
+        title={AlertBoxVisibility.title}
+        description={AlertBoxVisibility.description}
+        button={AlertBoxVisibility.button}
+        onPress={AlertBoxVisibility.onPress}
+      />
     </>
   );
 };
