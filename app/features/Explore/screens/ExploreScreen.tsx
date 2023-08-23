@@ -114,7 +114,6 @@ const ExploreScreen = () => {
 
   return (
     <View style={styles.parentContainer}>
-      <Text>{SpotsAvalability.toString()}</Text>
       <MapView
         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
         style={styles.map}
